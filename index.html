@@ -1,20 +1,32 @@
-<html><head><base href="web coder">
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <base href="web coder">
+    <base href="https://websim.dev">
     <meta charset="UTF-8">
-    <title>Code Editor with VS Code Features</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Code Editor</title>
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/1157/1157109.png" type="image/png">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/dracula.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/hint/show-hint.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/fold/foldgutter.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fira+Code&family=JetBrains+Mono&family=Roboto+Mono&family=Source+Code+Pro&family=Ubuntu+Mono&family=Inconsolata&family=Anonymous+Pro&family=IBM+Plex+Mono&family=Oxygen+Mono&family=PT+Mono&display=swap">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Fira+Code&family=JetBrains+Mono&family=Roboto+Mono&family=Source+Code+Pro&family=Ubuntu+Mono&family=Inconsolata&family=Anonymous+Pro&family=IBM+Plex+Mono&family=Oxygen+Mono&family=PT+Mono&display=swap">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/monokai.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/material.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/nord.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/solarized.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/github-dark.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/tomorrow-night-bright.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/tomorrow-night-bright.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/ayu-dark.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/gruvbox-dark.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/oceanic-next.min.css">
+
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -23,6 +35,7 @@
             background: #1e1e2e;
             color: #fff;
         }
+
         canvas {
             position: fixed;
             top: 0;
@@ -33,6 +46,7 @@
             opacity: 0.3;
             mix-blend-mode: screen;
         }
+
         .container {
             max-width: 1200px;
             width: 95%;
@@ -46,6 +60,7 @@
             -webkit-backdrop-filter: blur(5px);
             box-sizing: border-box;
         }
+
         .header {
             display: flex;
             justify-content: space-between;
@@ -54,16 +69,19 @@
             flex-wrap: wrap;
             gap: 15px;
         }
+
         .header h1 {
             font-size: clamp(1.5rem, 4vw, 2rem);
             margin: 0;
         }
+
         .editor-controls {
             display: flex;
             gap: 10px;
             align-items: center;
             flex-wrap: wrap;
         }
+
         .code-title-input {
             padding: 8px 12px;
             font-size: 16px;
@@ -76,14 +94,17 @@
             transition: all 0.3s ease;
             box-sizing: border-box;
         }
+
         .code-title-input:focus {
             outline: none;
             border-color: #6272a4;
             box-shadow: 0 0 0 2px rgba(98, 114, 164, 0.2);
         }
+
         .code-title-input::placeholder {
             color: #666;
         }
+
         .file-stats {
             margin: 10px 0;
             padding: 8px 12px;
@@ -92,6 +113,7 @@
             font-size: 14px;
             color: #8be9fd;
         }
+
         select {
             padding: 8px 12px;
             font-size: 16px;
@@ -101,7 +123,10 @@
             border: 1px solid #444;
             cursor: pointer;
         }
-        #font-family-select, #font-size-select, #theme-select {
+
+        #font-family-select,
+        #font-size-select,
+        #theme-select {
             padding: 8px 12px;
             font-size: 16px;
             border-radius: 4px;
@@ -110,6 +135,7 @@
             border: 1px solid #444;
             cursor: pointer;
         }
+
         .CodeMirror {
             height: 70vh;
             border-radius: 8px;
@@ -121,63 +147,79 @@
             -webkit-text-size-adjust: 100%;
             -ms-text-size-adjust: 100%;
         }
+
         .CodeMirror-vscrollbar,
         .CodeMirror-hscrollbar {
             transition: background-color 0.3s ease;
         }
+
         .cm-s-dracula .CodeMirror-vscrollbar::-webkit-scrollbar-thumb,
         .cm-s-dracula .CodeMirror-hscrollbar::-webkit-scrollbar-thumb {
             background-color: #6272a4;
         }
+
         .cm-s-monokai .CodeMirror-vscrollbar::-webkit-scrollbar-thumb,
         .cm-s-monokai .CodeMirror-hscrollbar::-webkit-scrollbar-thumb {
             background-color: #75715e;
         }
+
         .cm-s-material .CodeMirror-vscrollbar::-webkit-scrollbar-thumb,
         .cm-s-material .CodeMirror-hscrollbar::-webkit-scrollbar-thumb {
             background-color: #546e7a;
         }
+
         .cm-s-nord .CodeMirror-vscrollbar::-webkit-scrollbar-thumb,
         .cm-s-nord .CodeMirror-hscrollbar::-webkit-scrollbar-thumb {
             background-color: #4c566a;
         }
+
         .cm-s-solarized .CodeMirror-vscrollbar::-webkit-scrollbar-thumb,
         .cm-s-solarized .CodeMirror-hscrollbar::-webkit-scrollbar-thumb {
             background-color: #657b83;
         }
+
         .cm-s-github-dark .CodeMirror-vscrollbar::-webkit-scrollbar-thumb,
         .cm-s-github-dark .CodeMirror-hscrollbar::-webkit-scrollbar-thumb {
             background-color: #444d56;
         }
+
         .cm-s-tomorrow-night-bright .CodeMirror-vscrollbar::-webkit-scrollbar-thumb,
         .cm-s-tomorrow-night-bright .CodeMirror-hscrollbar::-webkit-scrollbar-thumb {
             background-color: #969896;
         }
+
         .cm-s-ayu-dark .CodeMirror-vscrollbar::-webkit-scrollbar-thumb,
         .cm-s-ayu-dark .CodeMirror-hscrollbar::-webkit-scrollbar-thumb {
             background-color: #3d424d;
         }
+
         .cm-s-gruvbox-dark .CodeMirror-vscrollbar::-webkit-scrollbar-thumb,
         .cm-s-gruvbox-dark .CodeMirror-hscrollbar::-webkit-scrollbar-thumb {
             background-color: #665c54;
         }
+
         .cm-s-oceanic-next .CodeMirror-vscrollbar::-webkit-scrollbar-thumb,
         .cm-s-oceanic-next .CodeMirror-hscrollbar::-webkit-scrollbar-thumb {
             background-color: #4f5b66;
         }
+
         .cm-matchhighlight {
             background-color: rgba(100, 100, 100, 0.3);
         }
+
         .CodeMirror-selection-highlight-scrollbar {
             background-color: #6272a4;
         }
+
         .CodeMirror-activeline-background {
             background: rgba(98, 114, 164, 0.15);
         }
+
         .CodeMirror-matchingbracket {
             background-color: rgba(98, 114, 164, 0.3);
             color: inherit !important;
         }
+
         .CodeMirror-foldmarker {
             color: #fff;
             text-shadow: none;
@@ -185,11 +227,13 @@
             padding: 0 4px;
             border-radius: 3px;
         }
+
         .controls {
             display: flex;
             gap: 10px;
             margin-top: 20px;
         }
+
         button {
             padding: 10px 20px;
             font-size: 16px;
@@ -200,9 +244,11 @@
             cursor: pointer;
             transition: all 0.3s ease;
         }
+
         button:hover {
             background: #7283b5;
         }
+
         .output {
             margin-top: 20px;
             padding: 15px;
@@ -210,6 +256,7 @@
             border-radius: 8px;
             min-height: 100px;
         }
+
         .command-palette {
             position: absolute;
             top: 50%;
@@ -223,6 +270,7 @@
             display: none;
             z-index: 1000;
         }
+
         .command-palette input {
             width: 100%;
             padding: 8px;
@@ -231,54 +279,116 @@
             color: #fff;
             border-radius: 4px;
         }
+
         .CodeMirror-selected {
             background: rgba(98, 114, 164, 0.4) !important;
         }
+
         .CodeMirror-selectedtext {
             font-family: inherit;
             font-size: inherit;
         }
+
         @media screen and (max-width: 768px) {
             body {
                 padding: 10px;
             }
-            
+
             .container {
                 width: 98%;
                 padding: 15px;
             }
-            
+
+            .header {
+                gap: 20px;
+            }
+
+            .header h1 {
+                font-size: 2.5rem;
+                /* Larger heading */
+            }
+
             .editor-controls {
                 width: 100%;
                 justify-content: flex-start;
+                gap: 15px;
             }
-            
-            select {
-                max-width: 140px;
-                font-size: 14px;
+
+            select,
+            .code-title-input,
+            button {
+                font-size: 16px;
+                /* Larger font */
+                padding: 12px 16px;
+                /* Larger touch targets */
+                min-height: 48px;
+                /* Minimum touch target size */
+                width: 100%;
+                /* Full width on mobile */
+                max-width: none;
+                /* Remove max-width constraint */
             }
-            
+
             .CodeMirror {
                 height: 60vh;
+                font-size: 18px;
+                /* Larger code font */
+            }
+
+            .file-stats {
+                font-size: 16px;
+                /* Larger stats text */
+                padding: 12px 16px;
+            }
+
+            .controls {
+                flex-direction: column;
+                /* Stack buttons vertically */
+                gap: 15px;
+            }
+
+            .output {
+                font-size: 16px;
+                padding: 20px;
             }
         }
+
+        /* Better touch handling for all touch devices */
         @media (hover: none) and (pointer: coarse) {
-            select, button {
-                min-height: 44px;
+
+            select,
+            button,
+            .code-title-input {
+                min-height: 48px;
+                font-size: 16px;
+                padding: 12px 16px;
             }
-            
+
+            .editor-controls {
+                flex-direction: column;
+            }
+
             .CodeMirror {
-                -webkit-tap-highlight-color: transparent;
+                font-size: 18px;
+                line-height: 1.5;
+            }
+
+            /* Increase line height for better touch selection */
+            .CodeMirror pre {
+                line-height: 1.6;
+                padding: 4px 8px;
             }
         }
+
         @supports not (backdrop-filter: blur(5px)) {
             .container {
                 background: rgba(30, 30, 46, 0.9);
             }
         }
     </style>
-    </head>
-    <body>
+</head>
+
+<body>
     <canvas id="backgroundCanvas"></canvas>
     <div class="container">
         <div class="header">
@@ -335,7 +445,7 @@
             <input type="text" id="commandInput" placeholder="Type a command...">
         </div>
     </div>
-    
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/javascript/javascript.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/xml/xml.min.js"></script>
@@ -362,7 +472,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/lua/lua.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/mllike/mllike.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/shell/shell.min.js"></script>
-    
+
     <script>
         function debounce(func, wait) {
             let timeout;
@@ -375,7 +485,7 @@
                 timeout = setTimeout(later, wait);
             };
         }
-    
+
         const languages = [
             'Plain Text',
             'Assembly',
@@ -400,7 +510,7 @@
             'XML',
             'YAML'
         ];
-    
+
         const select = document.getElementById('language-select');
         languages.forEach(lang => {
             const option = document.createElement('option');
@@ -408,7 +518,7 @@
             option.textContent = lang;
             select.appendChild(option);
         });
-    
+
         const editor = CodeMirror.fromTextArea(document.getElementById('editor'), {
             lineNumbers: true,
             theme: 'dracula',
@@ -423,7 +533,7 @@
                 "Ctrl-/": "toggleComment",
                 "Ctrl-P": showCommandPalette,
                 "Alt-F": "findPersistent",
-                "Tab": function(cm) {
+                "Tab": function (cm) {
                     if (cm.somethingSelected()) {
                         cm.indentSelection("add");
                     } else {
@@ -441,45 +551,45 @@
             workTime: 200,
             workDelay: 300,
         });
-    
+
         const titleInput = document.getElementById('code-title');
-    
+
         // Load saved title
         const savedTitle = localStorage.getItem('codeTitle');
         if (savedTitle) {
             titleInput.value = savedTitle;
         }
-    
+
         // Save title when changed
         titleInput.addEventListener('input', () => {
             localStorage.setItem('codeTitle', titleInput.value);
         });
-    
+
         function formatBytes(bytes) {
             if (bytes === 0) return '0 B';
-            
+
             const units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
             const k = 1024;
             const i = Math.floor(Math.log(bytes) / Math.log(k));
-            
+
             return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + units[i];
         }
-    
+
         function updateCodeStats() {
             const content = editor.getValue();
             const charCount = content.length;
             const byteCount = new Blob([content]).size;
-            document.getElementById('codeSize').textContent = 
+            document.getElementById('codeSize').textContent =
                 `${charCount.toLocaleString()} characters (${formatBytes(byteCount)})`;
         }
-    
+
         const debouncedUpdateCodeStats = debounce(updateCodeStats, 250);
         editor.on('change', debouncedUpdateCodeStats);
-    
+
         const fontFamilySelect = document.getElementById('font-family-select');
         const fontSizeSelect = document.getElementById('font-size-select');
         const themeSelect = document.getElementById('theme-select');
-    
+
         fontFamilySelect.addEventListener('change', (e) => {
             const fontFamily = e.target.value;
             editor.getWrapperElement().style.fontFamily = fontFamily;
@@ -488,7 +598,7 @@
             });
             editor.refresh();
         });
-    
+
         fontSizeSelect.addEventListener('change', (e) => {
             const fontSize = e.target.value + 'px';
             editor.getWrapperElement().style.fontSize = fontSize;
@@ -497,121 +607,121 @@
             });
             editor.refresh();
         });
-    
+
         themeSelect.addEventListener('change', (e) => {
             const theme = e.target.value;
             editor.setOption('theme', theme);
             localStorage.setItem('editorTheme', theme);
         });
-    
+
         editor.getWrapperElement().style.fontFamily = fontFamilySelect.value;
         editor.getWrapperElement().style.fontSize = fontSizeSelect.value + 'px';
-    
+
         const savedTheme = localStorage.getItem('editorTheme');
         if (savedTheme) {
             editor.setOption('theme', savedTheme);
             themeSelect.value = savedTheme;
         }
-    
-        editor.on("gutterClick", function(cm, line, gutter, clickEvent) {
+
+        editor.on("gutterClick", function (cm, line, gutter, clickEvent) {
             if (gutter === "CodeMirror-linenumbers") {
                 const lineContent = cm.getLine(line);
-                const start = {line: line, ch: 0};
-                const end = {line: line, ch: lineContent.length};
+                const start = { line: line, ch: 0 };
+                const end = { line: line, ch: lineContent.length };
                 cm.setSelection(start, end);
             }
         });
-    
+
         const modeMap = {
-            'plain text': {mode: null, mime: null},
-            'javascript': {mode: 'javascript', mime: 'text/javascript'},
-            'python': {mode: 'python', mime: 'text/x-python'},
-            'java': {mode: 'clike', mime: 'text/x-java'},
-            'c++': {mode: 'clike', mime: 'text/x-c++src'},
-            'c#': {mode: 'clike', mime: 'text/x-csharp'},
-            'php': {mode: 'php', mime: 'application/x-httpd-php'},
-            'ruby': {mode: 'ruby', mime: 'text/x-ruby'},
-            'swift': {mode: 'swift', mime: 'text/x-swift'},
-            'go': {mode: 'go', mime: 'text/x-go'},
-            'rust': {mode: 'rust', mime: 'text/x-rustsrc'},
-            'kotlin': {mode: 'kotlin', mime: 'text/x-kotlin'},
-            'lua': {mode: 'lua', mime: 'text/x-lua'},
-            'typescript': {mode: 'javascript', mime: 'application/typescript'},
-            'sql': {mode: 'sql', mime: 'text/x-sql'},
-            'assembly': {mode: 'gas', mime: 'text/x-gas'},
-            'html': {mode: 'xml', mime: 'text/html'},
-            'css': {mode: 'css', mime: 'text/css'},
-            'xml': {mode: 'xml', mime: 'application/xml'},
-            'yaml': {mode: 'yaml', mime: 'text/x-yaml'},
-            'json': {mode: 'javascript', mime: 'application/json'},
-            'markdown': {mode: 'markdown', mime: 'text/x-markdown'}
+            'plain text': { mode: null, mime: null },
+            'javascript': { mode: 'javascript', mime: 'text/javascript' },
+            'python': { mode: 'python', mime: 'text/x-python' },
+            'java': { mode: 'clike', mime: 'text/x-java' },
+            'c++': { mode: 'clike', mime: 'text/x-c++src' },
+            'c#': { mode: 'clike', mime: 'text/x-csharp' },
+            'php': { mode: 'php', mime: 'application/x-httpd-php' },
+            'ruby': { mode: 'ruby', mime: 'text/x-ruby' },
+            'swift': { mode: 'swift', mime: 'text/x-swift' },
+            'go': { mode: 'go', mime: 'text/x-go' },
+            'rust': { mode: 'rust', mime: 'text/x-rustsrc' },
+            'kotlin': { mode: 'kotlin', mime: 'text/x-kotlin' },
+            'lua': { mode: 'lua', mime: 'text/x-lua' },
+            'typescript': { mode: 'javascript', mime: 'application/typescript' },
+            'sql': { mode: 'sql', mime: 'text/x-sql' },
+            'assembly': { mode: 'gas', mime: 'text/x-gas' },
+            'html': { mode: 'xml', mime: 'text/html' },
+            'css': { mode: 'css', mime: 'text/css' },
+            'xml': { mode: 'xml', mime: 'application/xml' },
+            'yaml': { mode: 'yaml', mime: 'text/x-yaml' },
+            'json': { mode: 'javascript', mime: 'application/json' },
+            'markdown': { mode: 'markdown', mime: 'text/x-markdown' }
         };
-    
+
         select.addEventListener('change', (e) => {
             const lang = e.target.value;
-            const modeInfo = modeMap[lang] || {mode: null, mime: null};
-            
+            const modeInfo = modeMap[lang] || { mode: null, mime: null };
+
             const currentValue = editor.getValue();
             editor.setOption('mode', null);
-            
+
             setTimeout(() => {
                 editor.setOption('mode', modeInfo.mime);
                 editor.setValue(currentValue);
                 editor.refresh();
             }, 50);
         });
-    
+
         function showCommandPalette() {
             const palette = document.getElementById('commandPalette');
             const input = document.getElementById('commandInput');
             palette.style.display = 'block';
             input.focus();
         }
-    
-        document.getElementById('commandInput').addEventListener('keydown', function(e) {
+
+        document.getElementById('commandInput').addEventListener('keydown', function (e) {
             if (e.key === 'Escape') {
                 document.getElementById('commandPalette').style.display = 'none';
             }
         });
-    
+
         let cursors = [];
-        editor.on('mousedown', function(cm, e) {
+        editor.on('mousedown', function (cm, e) {
             if (e.ctrlKey || e.metaKey) {
-                const pos = cm.coordsChar({left: e.pageX, top: e.pageY});
+                const pos = cm.coordsChar({ left: e.pageX, top: e.pageY });
                 cursors.push(cm.setSelection(pos, pos));
                 e.preventDefault();
             } else {
                 cursors = [];
             }
         });
-    
+
         setInterval(() => {
             localStorage.setItem('editorContent', editor.getValue());
         }, 5000);
-    
+
         const savedContent = localStorage.getItem('editorContent');
         if (savedContent) {
             editor.setValue(savedContent);
         } else {
             editor.setValue('// Write your code here\n');
         }
-    
+
         const canvas = document.getElementById('backgroundCanvas');
         const ctx = canvas.getContext('2d');
-    
+
         let width = canvas.width = window.innerWidth;
         let height = canvas.height = window.innerHeight;
-    
+
         window.addEventListener('resize', debounce(() => {
             width = canvas.width = window.innerWidth;
             height = canvas.height = window.innerHeight;
         }, 250));
-    
+
         class Particle {
             constructor() {
                 this.reset();
             }
-            
+
             reset() {
                 this.x = Math.random() * width;
                 this.y = Math.random() * height;
@@ -621,35 +731,35 @@
                 this.color = `hsl(${Math.random() * 60 + 200}, 70%, 70%)`;
                 this.opacity = 0.1 + Math.random() * 0.3;
             }
-            
+
             update() {
                 this.x += this.speedX;
                 this.y += this.speedY;
-                
+
                 if (this.x < 0 || this.x > width) this.speedX *= -1;
                 if (this.y < 0 || this.y > height) this.speedY *= -1;
-                
+
                 if (Math.random() < 0.1) {
                     this.speedX += (Math.random() - 0.5) * 0.1;
                     this.speedY += (Math.random() - 0.5) * 0.1;
-                    
+
                     this.speedX = Math.max(Math.min(this.speedX, 2), -2);
                     this.speedY = Math.max(Math.min(this.speedY, 2), -2);
                 }
             }
-            
+
             draw(ctx) {
                 ctx.beginPath();
                 ctx.fillStyle = this.color;
                 ctx.globalAlpha = this.opacity;
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                 ctx.fill();
-                
+
                 particles.forEach(p => {
                     const dx = this.x - p.x;
                     const dy = this.y - p.y;
                     const dist = Math.sqrt(dx * dx + dy * dy);
-                    
+
                     if (dist < 100) {
                         ctx.beginPath();
                         ctx.strokeStyle = this.color;
@@ -663,68 +773,68 @@
                 ctx.globalAlpha = 1;
             }
         }
-    
+
         function createGradient() {
             const gradient = ctx.createLinearGradient(0, 0, width, height);
             const time = Date.now() * 0.001;
-            
+
             gradient.addColorStop(0, `hsl(${time * 10 % 360}, 70%, 20%)`);
             gradient.addColorStop(0.5, `hsl(${(time * 10 + 120) % 360}, 70%, 15%)`);
             gradient.addColorStop(1, `hsl(${(time * 10 + 240) % 360}, 70%, 20%)`);
-            
+
             return gradient;
         }
-    
+
         const particles = Array(100).fill().map(() => new Particle());
-    
+
         let animationFrameId;
         let lastTime = 0;
         const FPS = 30;
         const frameDelay = 1000 / FPS;
-    
+
         function animate(currentTime) {
             animationFrameId = requestAnimationFrame(animate);
-            
+
             const deltaTime = currentTime - lastTime;
             if (deltaTime < frameDelay) return;
-            
+
             lastTime = currentTime - (deltaTime % frameDelay);
-            
+
             ctx.fillStyle = '#1e1e2e';
             ctx.fillRect(0, 0, width, height);
-            
+
             particles.forEach(particle => particle.update());
             particles.forEach(particle => particle.draw(ctx));
         }
-    
+
         let mouseX = 0;
         let mouseY = 0;
-    
+
         const debouncedMouseMove = debounce((e) => {
             mouseX = e.clientX;
             mouseY = e.clientY;
-            
+
             particles.forEach(particle => {
                 const dx = mouseX - particle.x;
                 const dy = mouseY - particle.y;
                 const dist = Math.sqrt(dx * dx + dy * dy);
-                
+
                 if (dist < 100) {
                     particle.speedX += dx * 0.001;
                     particle.speedY += dy * 0.001;
                 }
             });
         }, 16);
-    
+
         canvas.addEventListener('mousemove', debouncedMouseMove);
-    
+
         animate();
-    
-        editor.on('beforeSelectionChange', function(cm, obj) {
+
+        editor.on('beforeSelectionChange', function (cm, obj) {
             const wrapper = cm.getWrapperElement();
             const currentFont = wrapper.style.fontFamily;
             const currentSize = wrapper.style.fontSize;
-            
+
             setTimeout(() => {
                 wrapper.querySelectorAll('.CodeMirror-selected, .CodeMirror-selectedtext').forEach(el => {
                     el.style.fontFamily = currentFont;
@@ -732,11 +842,13 @@
                 });
             }, 0);
         });
-    
+
         window.addEventListener('beforeunload', () => {
             cancelAnimationFrame(animationFrameId);
         });
-    
+
         updateCodeStats();
     </script>
-    </body></html>
+</body>
+
+</html>
