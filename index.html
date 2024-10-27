@@ -254,7 +254,7 @@
         }
         
         .header h1 {
-            font-size: 1.8rem;
+            font-size: 2rem; 
             width: 100%;
             text-align: center;
         }
@@ -267,71 +267,64 @@
         
         select, #font-family-select, #font-size-select, #theme-select, #language-select {
             width: calc(50% - 4px);
-            min-height: 44px;
-            font-size: 16px;
-            padding: 10px;
+            min-height: 48px; 
+            font-size: 18px; 
+            padding: 12px;
         }
         
         .code-title-input {
-            font-size: 16px;
-            padding: 12px;
+            font-size: 18px; 
+            padding: 14px; 
             margin: 10px 0;
+            height: 48px; 
         }
         
         .CodeMirror {
-            height: 50vh;
-            font-size: 16px;
+            height: 60vh; 
+            font-size: 18px; 
         }
         
         .controls {
             flex-wrap: wrap;
-            gap: 8px;
+            gap: 10px;
         }
         
         .controls button {
             width: 100%;
-            min-height: 44px;
-            font-size: 16px;
-            padding: 12px;
+            min-height: 48px; 
+            font-size: 18px; 
+            padding: 14px; 
         }
         
         .output {
-            font-size: 14px;
-            padding: 12px;
+            font-size: 16px; 
+            padding: 14px; 
         }
         
         .file-stats {
-            font-size: 14px;
-            padding: 10px;
+            font-size: 16px; 
+            padding: 12px;
             text-align: center;
         }
     }
     @media screen and (max-width: 380px) {
         .header h1 {
-            font-size: 1.5rem;
+            font-size: 1.8rem; 
         }
         
         select, #font-family-select, #font-size-select, #theme-select, #language-select {
             width: 100%;
+            margin-bottom: 8px;
         }
         
         .CodeMirror {
-            font-size: 14px;
+            font-size: 16px; 
         }
     }
     @media (hover: none) and (pointer: coarse) {
         select, button, .code-title-input {
-            min-height: 44px;
+            min-height: 48px; 
             touch-action: manipulation;
-        }
-        
-        .CodeMirror {
-            touch-action: pan-x pan-y;
-        }
-        
-        .CodeMirror-vscrollbar,
-        .CodeMirror-hscrollbar {
-            width: 12px !important;
         }
     }
     @supports not (backdrop-filter: blur(5px)) {
