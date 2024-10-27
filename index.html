@@ -32,6 +32,7 @@
         z-index: -1;
         opacity: 0.3;
         mix-blend-mode: screen;
+        will-change: transform;
     }
     .container {
         max-width: 1200px;
@@ -45,6 +46,8 @@
         backdrop-filter: blur(5px);
         -webkit-backdrop-filter: blur(5px);
         box-sizing: border-box;
+        transform: translateZ(0);
+        backface-visibility: hidden;
     }
     .header {
         display: flex;
@@ -120,50 +123,13 @@
         -moz-osx-font-smoothing: grayscale;
         -webkit-text-size-adjust: 100%;
         -ms-text-size-adjust: 100%;
+        will-change: transform;
+        transform: translateZ(0);
+        backface-visibility: hidden;
     }
     .CodeMirror-vscrollbar,
     .CodeMirror-hscrollbar {
         transition: background-color 0.3s ease;
-    }
-    .cm-s-dracula .CodeMirror-vscrollbar::-webkit-scrollbar-thumb,
-    .cm-s-dracula .CodeMirror-hscrollbar::-webkit-scrollbar-thumb {
-        background-color: #6272a4;
-    }
-    .cm-s-monokai .CodeMirror-vscrollbar::-webkit-scrollbar-thumb,
-    .cm-s-monokai .CodeMirror-hscrollbar::-webkit-scrollbar-thumb {
-        background-color: #75715e;
-    }
-    .cm-s-material .CodeMirror-vscrollbar::-webkit-scrollbar-thumb,
-    .cm-s-material .CodeMirror-hscrollbar::-webkit-scrollbar-thumb {
-        background-color: #546e7a;
-    }
-    .cm-s-nord .CodeMirror-vscrollbar::-webkit-scrollbar-thumb,
-    .cm-s-nord .CodeMirror-hscrollbar::-webkit-scrollbar-thumb {
-        background-color: #4c566a;
-    }
-    .cm-s-solarized .CodeMirror-vscrollbar::-webkit-scrollbar-thumb,
-    .cm-s-solarized .CodeMirror-hscrollbar::-webkit-scrollbar-thumb {
-        background-color: #657b83;
-    }
-    .cm-s-github-dark .CodeMirror-vscrollbar::-webkit-scrollbar-thumb,
-    .cm-s-github-dark .CodeMirror-hscrollbar::-webkit-scrollbar-thumb {
-        background-color: #444d56;
-    }
-    .cm-s-tomorrow-night-bright .CodeMirror-vscrollbar::-webkit-scrollbar-thumb,
-    .cm-s-tomorrow-night-bright .CodeMirror-hscrollbar::-webkit-scrollbar-thumb {
-        background-color: #969896;
-    }
-    .cm-s-ayu-dark .CodeMirror-vscrollbar::-webkit-scrollbar-thumb,
-    .cm-s-ayu-dark .CodeMirror-hscrollbar::-webkit-scrollbar-thumb {
-        background-color: #3d424d;
-    }
-    .cm-s-gruvbox-dark .CodeMirror-vscrollbar::-webkit-scrollbar-thumb,
-    .cm-s-gruvbox-dark .CodeMirror-hscrollbar::-webkit-scrollbar-thumb {
-        background-color: #665c54;
-    }
-    .cm-s-oceanic-next .CodeMirror-vscrollbar::-webkit-scrollbar-thumb,
-    .cm-s-oceanic-next .CodeMirror-hscrollbar::-webkit-scrollbar-thumb {
-        background-color: #4f5b66;
     }
     .cm-matchhighlight {
         background-color: rgba(100, 100, 100, 0.3);
@@ -177,13 +143,6 @@
     .CodeMirror-matchingbracket {
         background-color: rgba(98, 114, 164, 0.3);
         color: inherit !important;
-    }
-    .CodeMirror-foldmarker {
-        color: #fff;
-        text-shadow: none;
-        background-color: #6272a4;
-        padding: 0 4px;
-        border-radius: 3px;
     }
     .controls {
         display: flex;
@@ -529,20 +488,16 @@
         lineWrapping: true,
         showCursorWhenSelecting: true,
         autofocus: true,
-        viewportMargin: Infinity,
-        workTime: 200,
-        workDelay: 300,
+        viewportMargin: Infinity
     });
 
     const titleInput = document.getElementById('code-title');
 
-    // Load saved title
     const savedTitle = localStorage.getItem('codeTitle');
     if (savedTitle) {
         titleInput.value = savedTitle;
     }
 
-    // Save title when changed
     titleInput.addEventListener('input', () => {
         localStorage.setItem('codeTitle', titleInput.value);
     });
@@ -679,7 +634,7 @@
 
     setInterval(() => {
         localStorage.setItem('editorContent', editor.getValue());
-    }, 5000);
+    }, 10000);
 
     const savedContent = localStorage.getItem('editorContent');
     if (savedContent) {
@@ -697,7 +652,7 @@
     window.addEventListener('resize', debounce(() => {
         width = canvas.width = window.innerWidth;
         height = canvas.height = window.innerHeight;
-    }, 250));
+    }, 500));
 
     class Particle {
         constructor() {
@@ -717,7 +672,7 @@
         update() {
             this.x += this.speedX;
             this.y += this.speedY;
-            
+
             if (this.x < 0 || this.x > width) this.speedX *= -1;
             if (this.y < 0 || this.y > height) this.speedY *= -1;
             
@@ -756,18 +711,7 @@
         }
     }
 
-    function createGradient() {
-        const gradient = ctx.createLinearGradient(0, 0, width, height);
-        const time = Date.now() * 0.001;
-        
-        gradient.addColorStop(0, `hsl(${time * 10 % 360}, 70%, 20%)`);
-        gradient.addColorStop(0.5, `hsl(${(time * 10 + 120) % 360}, 70%, 15%)`);
-        gradient.addColorStop(1, `hsl(${(time * 10 + 240) % 360}, 70%, 20%)`);
-        
-        return gradient;
-    }
-
-    const particles = Array(100).fill().map(() => new Particle());
+    const particles = Array(50).fill().map(() => new Particle());
 
     let animationFrameId;
     let lastTime = 0;
@@ -785,8 +729,13 @@
         ctx.fillStyle = '#1e1e2e';
         ctx.fillRect(0, 0, width, height);
         
-        particles.forEach(particle => particle.update());
-        particles.forEach(particle => particle.draw(ctx));
+        particles.forEach(particle => {
+            if (particle.x >= 0 && particle.x <= width && 
+                particle.y >= 0 && particle.y <= height) {
+                particle.update();
+                particle.draw(ctx);
+            }
+        });
     }
 
     let mouseX = 0;
@@ -795,7 +744,7 @@
     const debouncedMouseMove = debounce((e) => {
         mouseX = e.clientX;
         mouseY = e.clientY;
-        
+
         particles.forEach(particle => {
             const dx = mouseX - particle.x;
             const dy = mouseY - particle.y;
@@ -806,7 +755,7 @@
                 particle.speedY += dy * 0.001;
             }
         });
-    }, 16);
+    }, 32);
 
     canvas.addEventListener('mousemove', debouncedMouseMove);
 
