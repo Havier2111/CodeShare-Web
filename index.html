@@ -27,6 +27,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/oceanic-next.min.css">
 
     <style>
+        * {
+            scrollbar-color: #525870 #252835;
+        }
+        
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
@@ -47,8 +51,9 @@
         }
 
         .container {
-            max-width: 1200px;
-            margin: 0 auto;
+            width: 90%; /* Chiếm 90% chiều rộng của cửa sổ */
+            max-width: 1200px; /* Giới hạn chiều rộng tối đa */
+            margin: 0 auto; /* Căn giữa container */
             position: relative;
             z-index: 1;
             background: rgba(30, 30, 46, 0.7);
@@ -110,6 +115,7 @@
             color: #fff;
             border: 1px solid #444;
             cursor: pointer;
+            scrollbar-color: #525870 #252835;
         }
 
         #font-family-select,
@@ -122,6 +128,7 @@
             color: #fff;
             border: 1px solid #444;
             cursor: pointer;
+            scrollbar-color: #525870 #252835;
         }
 
         .CodeMirror {
@@ -471,7 +478,7 @@
         }
 
         const debouncedUpdateCodeStats = debounce(updateCodeStats, 250);
-        editor.on('change', debouncedUpdateCodeStats);
+        editor.on('change', updateCodeStats);
 
         const fontFamilySelect = document.getElementById('font-family-select');
         const fontSizeSelect = document.getElementById('font-size-select');
